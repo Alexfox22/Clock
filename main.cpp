@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     QQmlContext* context = engine.rootContext();
         context->setContextProperty("Trigger", &firstClass);
         context->setContextProperty("PrepareData", &secondClass);
-    //qDebug() << "I am MAIN " << QThread::currentThread();
+    qDebug() << "I am MAIN " << QThread::currentThread();
     QThread* thread = new QThread();
     Trigger* wow = &firstClass;
     wow->moveToThread(thread);
@@ -36,5 +36,7 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
     engine.load(url);
 
+    //
     return app.exec();
+    thread->deleteLater();
 }

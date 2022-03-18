@@ -12,7 +12,7 @@ Trigger::Trigger(QObject *parent)
 void Trigger::runThread()
 {
     while (true) {
-        //qDebug() << "First class in " << QThread::currentThread();
+        qDebug() << "First class in " << QThread::currentThread();
         emit sendSignal();
         QThread::sleep(1);
     }

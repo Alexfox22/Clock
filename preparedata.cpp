@@ -76,7 +76,7 @@ QString PrepareData::readSeconds()
 
 void PrepareData::receiveSignal()
 {
-    //qDebug() << "Second class in " << QThread::currentThread();
+    qDebug() << "Second class in " << QThread::currentThread();
     readHours();
     readMinutes();
     readSeconds();
