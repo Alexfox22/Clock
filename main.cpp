@@ -17,14 +17,16 @@ int main(int argc, char *argv[])
     Trigger firstClass;
     PrepareData secondClass;
     QQmlApplicationEngine engine;
+    //qmlRegisterType<Trigger>("Trigger", 1, 0, "Trigger");
+    //qmlRegisterType<PrepareData>("PrepareData", 1, 0, "PrepareData");
     QQmlContext* context = engine.rootContext();
         context->setContextProperty("Trigger", &firstClass);
         context->setContextProperty("PrepareData", &secondClass);
-    qDebug() << "I am MAIN " << QThread::currentThread();
+    //qDebug() << "I am MAIN " << QThread::currentThread();
     QThread* thread = new QThread();
     Trigger* wow = &firstClass;
     wow->moveToThread(thread);
-    QThread::connect( thread, &QThread::started, wow, &Trigger::runThread);
+    QThread::connect(thread, &QThread::started, wow, &Trigger::runThread);
     thread->start();
     QObject::connect(&firstClass, &Trigger::sendSignal,
                    &secondClass, &PrepareData::receiveSignal);
@@ -36,7 +38,5 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
     engine.load(url);
 
-    //
     return app.exec();
-    thread->deleteLater();
 }

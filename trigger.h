@@ -2,7 +2,6 @@
 #define TRIGGER_H
 
 #include <QObject>
-#include <qqml.h>
 
 class Trigger : public QObject
 {
@@ -12,10 +11,12 @@ public:
     explicit Trigger(QObject *parent = nullptr);
 
 signals:
-    void sendSignal();
+    void sendSignal(QString timeData);
 
 public slots:
     void runThread();
+private:
+    QString m_timeData;
 };
 
 #endif // TRIGGER_H

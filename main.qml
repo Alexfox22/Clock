@@ -2,6 +2,8 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.15
+//import Trigger 1.0
+//import PrepareData 1.0
 
 Window{
     width: 460
@@ -38,6 +40,7 @@ Window{
 
         MyText{
             text: PrepareData.seconds
+
         }
 
         MyText{
@@ -47,31 +50,48 @@ Window{
     }
 
     OpacityAnimator{
+        id: qwerty
         loops: Animation.Infinite
         from: 1.0
         to: 0.0
         duration:1000
         target: firstColon
-        running:true
-        onFinished: second.start()
+        running: true
     }
+    Text
+    {
+        id: mytesttext
+        text: "meow"
+    }
+    State {
+            name: "brighter"; when: true
+            PropertyChanges { target: mytesttext; text: "wow" }
+        }
+
 
     OpacityAnimator{
+        id: animator
         loops: Animation.Infinite
         from: 1.0
         to: 0.0
         duration:1000
         target: secondColon
-        running:true
-        onFinished: second.start()
+        running: true
     }
 
-    MouseArea{
-        anchors.fill: parent
-        onClicked: {
-            if (mouse.button == Qt.LeftButton) {
-                PrepareData.changeFormat()
+    State {
+                name: "clicked"
+                when: PrepareData.update
+                PropertyChanges { target: animator;  loops: Animation.Infinite }
             }
-        }
-    }
+   // MouseArea{
+   //     id: mousearea
+   //     anchors.fill: parent
+//
+    //    onClicked: {
+     //       if (mouse.button == Qt.LeftButton) {
+     //           PrepareData.changeFormat()
+     //       }
+     //   }
+   // }
 }

@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <QThread>
+#include <QTime>
 
 #include <trigger.h>
 
@@ -13,7 +14,8 @@ void Trigger::runThread()
 {
     while (true) {
         qDebug() << "First class in " << QThread::currentThread();
-        emit sendSignal();
+        m_timeData = QTime::currentTime().toString("HH:mm:ss");
+        emit sendSignal(m_timeData);
         QThread::sleep(1);
     }
 }
