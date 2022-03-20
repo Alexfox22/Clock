@@ -10,7 +10,7 @@ class PrepareData : public QObject
     Q_PROPERTY(QString hours READ readHours NOTIFY updateHours)
     Q_PROPERTY(QString minutes READ readMinutes NOTIFY updateMinutes)
     Q_PROPERTY(QString seconds READ readSeconds NOTIFY updateSeconds)
-    Q_PROPERTY(bool update NOTIFY updateSeconds)
+    Q_PROPERTY(bool update READ readUpdate NOTIFY updateSmth)
 
 public:
     explicit PrepareData(QObject *parent = nullptr);
@@ -21,12 +21,14 @@ public:
     QString readHours();
     QString readMinutes();
     QString readSeconds();
+    bool readUpdate();
 
 signals:
     void updateFormat();
     void updateHours();
     void updateMinutes();
     void updateSeconds();
+    void updateSmth();
 
 public slots:
     void receiveSignal(QString fullTime);

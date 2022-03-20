@@ -11,6 +11,8 @@ Window{
     visible: true
     title: qsTr("Time")
 
+    property bool running: false
+
     RowLayout{
         id: layout
         width: 0.8*parent.width
@@ -51,47 +53,32 @@ Window{
 
     OpacityAnimator{
         id: qwerty
-        loops: Animation.Infinite
+        //loops: Animation.Infinite
         from: 1.0
         to: 0.0
-        duration:1000
+        duration: 900
         target: firstColon
-        running: true
+        running: PrepareData.update
     }
-    Text
-    {
-        id: mytesttext
-        text: "meow"
-    }
-    State {
-            name: "brighter"; when: true
-            PropertyChanges { target: mytesttext; text: "wow" }
-        }
 
 
     OpacityAnimator{
         id: animator
-        loops: Animation.Infinite
+        //loops: Animation.Infinite
         from: 1.0
         to: 0.0
-        duration:1000
+        duration: 900
         target: secondColon
-        running: true
+        running: PrepareData.update
     }
 
-    State {
-                name: "clicked"
-                when: PrepareData.update
-                PropertyChanges { target: animator;  loops: Animation.Infinite }
+    MouseArea{
+        id: mousearea
+        anchors.fill: parent
+        onClicked: {
+            if (mouse.button == Qt.LeftButton) {
+                PrepareData.changeFormat()
             }
-   // MouseArea{
-   //     id: mousearea
-   //     anchors.fill: parent
-//
-    //    onClicked: {
-     //       if (mouse.button == Qt.LeftButton) {
-     //           PrepareData.changeFormat()
-     //       }
-     //   }
-   // }
+        }
+    }
 }

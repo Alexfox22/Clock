@@ -1,7 +1,7 @@
 #include <QGuiApplication>
-#include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QThread>
+#include <QQmlApplicationEngine>
 
 #include <trigger.h>
 #include <preparedata.h>
@@ -24,9 +24,9 @@ int main(int argc, char *argv[])
         context->setContextProperty("PrepareData", &secondClass);
     //qDebug() << "I am MAIN " << QThread::currentThread();
     QThread* thread = new QThread();
-    Trigger* wow = &firstClass;
-    wow->moveToThread(thread);
-    QThread::connect(thread, &QThread::started, wow, &Trigger::runThread);
+    Trigger* pointer = &firstClass;
+    pointer->moveToThread(thread);
+    QThread::connect(thread, &QThread::started, pointer, &Trigger::runThread);
     thread->start();
     QObject::connect(&firstClass, &Trigger::sendSignal,
                    &secondClass, &PrepareData::receiveSignal);

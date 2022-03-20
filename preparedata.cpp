@@ -10,6 +10,7 @@ PrepareData::PrepareData(QObject *parent)
     m_hours = "";
     m_minutes = "";
     m_seconds = "";
+    m_update = false;
 }
 
 QString PrepareData::readFormat()
@@ -19,7 +20,7 @@ QString PrepareData::readFormat()
 
 void PrepareData::changeFormat()
 {
-    if ((m_format == "am")||(m_format == "pm"))
+    if ((m_format == "am") || (m_format == "pm"))
     {
            m_format = "";
     }
@@ -66,10 +67,15 @@ QString PrepareData::readMinutes()
 QString PrepareData::readSeconds()
 {
     m_seconds = m_fullTime.right(2);
-    //m_update=true;
-    //qDebug() << "-----------------"<<m_update;
+    m_update = true;
     emit updateSeconds();
+    emit updateSmth();
     return m_seconds;
+}
+
+bool PrepareData::readUpdate()
+{
+    return m_update;
 }
 
 void PrepareData::receiveSignal(QString fullTime)
