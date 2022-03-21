@@ -2,7 +2,7 @@
 #define PREPAREDATA_H
 
 #include <QObject>
-#include <qqml.h>
+#include <QTime>
 
 class PrepareData : public QObject
 {
@@ -11,6 +11,7 @@ class PrepareData : public QObject
     Q_PROPERTY(QString hours READ readHours NOTIFY updateHours)
     Q_PROPERTY(QString minutes READ readMinutes NOTIFY updateMinutes)
     Q_PROPERTY(QString seconds READ readSeconds NOTIFY updateSeconds)
+    Q_PROPERTY(bool update READ readUpdate NOTIFY updateSmth)
 
 public:
     explicit PrepareData(QObject *parent = nullptr);
@@ -21,21 +22,27 @@ public:
     QString readHours();
     QString readMinutes();
     QString readSeconds();
+    bool readUpdate();
 
 signals:
     void updateFormat();
     void updateHours();
     void updateMinutes();
     void updateSeconds();
+    void updateSmth();
+
+    void exit_proc();   //we can emit this signal to finish work in trigger
 
 public slots:
-    void receiveSignal();
+    void receiveSignal(QTime fullTime);
 
 private:
     QString m_format;
     QString m_hours;
     QString m_minutes;
     QString m_seconds;
+    QTime m_fullTime;
+    bool m_update;
 };
 
 #endif // PREPAREDATA_H

@@ -1,21 +1,26 @@
 #ifndef TRIGGER_H
 #define TRIGGER_H
 
-#include <QObject>
-#include <qqml.h>
+#include <QThread>
+#include <QTime>
 
-class Trigger : public QObject
+class Trigger : public QThread
 {
     Q_OBJECT
 
-public:
-    explicit Trigger(QObject *parent = nullptr);
+    void run();
 
 signals:
-    void sendSignal();
+    void sendSignal(QTime timeData);
 
 public slots:
-    void runThread();
+    void getSignal();
+
+private:
+    QTime m_timeData;
+     bool m_label;
+
+    ~Trigger();
 };
 
 #endif // TRIGGER_H

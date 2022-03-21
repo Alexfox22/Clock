@@ -9,6 +9,8 @@ Window{
     visible: true
     title: qsTr("Time")
 
+    property bool running: true
+
     RowLayout{
         id: layout
         width: 0.8*parent.width
@@ -38,6 +40,7 @@ Window{
 
         MyText{
             text: PrepareData.seconds
+
         }
 
         MyText{
@@ -47,26 +50,23 @@ Window{
     }
 
     OpacityAnimator{
-        loops: Animation.Infinite
         from: 1.0
         to: 0.0
-        duration:1000
+        duration: 600
         target: firstColon
-        running:true
-        onFinished: second.start()
+        running: PrepareData.update
     }
 
     OpacityAnimator{
-        loops: Animation.Infinite
         from: 1.0
         to: 0.0
-        duration:1000
+        duration: 600
         target: secondColon
-        running:true
-        onFinished: second.start()
+        running: PrepareData.update
     }
 
     MouseArea{
+        id: mousearea
         anchors.fill: parent
         onClicked: {
             if (mouse.button == Qt.LeftButton) {
