@@ -1,24 +1,23 @@
 #include <QDebug>
-#include <QThread>
-#include <QTime>
 
 #include <trigger.h>
 
-Trigger::Trigger(QObject *parent)
-    : QObject{parent}
+void Trigger::run()
 {
-
-}
-
-void Trigger::runThread()
-{
-    while (true) {
-        qDebug() << "First class in " << QThread::currentThread();
-        m_timeData = QTime::currentTime().toString("HH:mm:ss");
+    m_label = true;
+    while (m_label == true) {
+        m_timeData = QTime::currentTime();
         emit sendSignal(m_timeData);
         QThread::sleep(1);
     }
 }
 
+void Trigger::getSignal()
+{
+    m_label = false;
+}
 
-
+Trigger::~Trigger()
+{
+    qDebug() << "Deleted thread";
+}

@@ -1,5 +1,4 @@
 #include <QDebug>
-#include <QThread>
 
 #include <preparedata.h>
 
@@ -41,10 +40,10 @@ void PrepareData::changeFormat()
 QString PrepareData::readHours()
 {
     QString buffer = m_hours;
-    m_hours =m_fullTime.left(2);
-    if ((m_format == "am")||(m_format == "pm"))
+    m_hours = m_fullTime.toString("HH");
+    if ((m_format == "am") || (m_format == "pm"))
     {
-        m_hours = QVariant(m_hours.toInt()%12).toString();
+        m_hours = QVariant(m_hours.toInt() % 12).toString();
     }
     if (buffer != m_hours)
     {
@@ -56,7 +55,7 @@ QString PrepareData::readHours()
 QString PrepareData::readMinutes()
 {
     QString buffer = m_minutes;
-    m_minutes =m_fullTime.mid(3,2);
+    m_minutes = m_fullTime.toString("mm");
     if (buffer != m_minutes)
     {
     emit updateMinutes();
@@ -66,7 +65,7 @@ QString PrepareData::readMinutes()
 
 QString PrepareData::readSeconds()
 {
-    m_seconds = m_fullTime.right(2);
+    m_seconds = m_fullTime.toString("ss");
     m_update = true;
     emit updateSeconds();
     emit updateSmth();
@@ -78,10 +77,9 @@ bool PrepareData::readUpdate()
     return m_update;
 }
 
-void PrepareData::receiveSignal(QString fullTime)
+void PrepareData::receiveSignal(QTime fullTime)
 {
     m_fullTime = fullTime;
-    qDebug() << "Second class in " << QThread::currentThread();
     readHours();
     readMinutes();
     readSeconds();

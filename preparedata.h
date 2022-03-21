@@ -2,6 +2,7 @@
 #define PREPAREDATA_H
 
 #include <QObject>
+#include <QTime>
 
 class PrepareData : public QObject
 {
@@ -30,15 +31,17 @@ signals:
     void updateSeconds();
     void updateSmth();
 
+    void exit_proc();   //we can emit this signal to finish work in trigger
+
 public slots:
-    void receiveSignal(QString fullTime);
+    void receiveSignal(QTime fullTime);
 
 private:
     QString m_format;
     QString m_hours;
     QString m_minutes;
     QString m_seconds;
-    QString m_fullTime;
+    QTime m_fullTime;
     bool m_update;
 };
 

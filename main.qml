@@ -2,8 +2,6 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.15
-//import Trigger 1.0
-//import PrepareData 1.0
 
 Window{
     width: 460
@@ -11,7 +9,7 @@ Window{
     visible: true
     title: qsTr("Time")
 
-    property bool running: false
+    property bool running: true
 
     RowLayout{
         id: layout
@@ -52,22 +50,17 @@ Window{
     }
 
     OpacityAnimator{
-        id: qwerty
-        //loops: Animation.Infinite
         from: 1.0
         to: 0.0
-        duration: 900
+        duration: 600
         target: firstColon
         running: PrepareData.update
     }
 
-
     OpacityAnimator{
-        id: animator
-        //loops: Animation.Infinite
         from: 1.0
         to: 0.0
-        duration: 900
+        duration: 600
         target: secondColon
         running: PrepareData.update
     }

@@ -1,7 +1,7 @@
+#include <QQmlApplicationEngine>
 #include <QGuiApplication>
 #include <QQmlContext>
 #include <QThread>
-#include <QQmlApplicationEngine>
 
 #include <trigger.h>
 #include <preparedata.h>
@@ -14,22 +14,18 @@ int main(int argc, char *argv[])
 #endif
     QGuiApplication app(argc, argv);
 
-    Trigger firstClass;
     PrepareData secondClass;
     QQmlApplicationEngine engine;
-    //qmlRegisterType<Trigger>("Trigger", 1, 0, "Trigger");
-    //qmlRegisterType<PrepareData>("PrepareData", 1, 0, "PrepareData");
     QQmlContext* context = engine.rootContext();
-        context->setContextProperty("Trigger", &firstClass);
         context->setContextProperty("PrepareData", &secondClass);
-    //qDebug() << "I am MAIN " << QThread::currentThread();
-    QThread* thread = new QThread();
-    Trigger* pointer = &firstClass;
-    pointer->moveToThread(thread);
-    QThread::connect(thread, &QThread::started, pointer, &Trigger::runThread);
-    thread->start();
-    QObject::connect(&firstClass, &Trigger::sendSignal,
-                   &secondClass, &PrepareData::receiveSignal);
+
+       Trigger* thread = new Trigger();
+       PrepareData* pointer = &secondClass;
+       Trigger::connect(thread, &Trigger::sendSignal, pointer, &PrepareData::receiveSignal);
+       Trigger::connect(pointer, &PrepareData::exit_proc, thread, &Trigger::getSignal);
+       Trigger::connect(thread, &Trigger::finished, thread, &Trigger::deleteLater);
+       thread->start();
+
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
