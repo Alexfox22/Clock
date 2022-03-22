@@ -16,8 +16,12 @@ class PrepareData : public QObject
 public:
     explicit PrepareData(QObject *parent = nullptr);
 
-    Q_INVOKABLE void changeFormat();
     QString readFormat();
+
+    Q_INVOKABLE void changeFormat();
+    void changeHours();
+    void changeMinutes();
+    void changeSeconds();
 
     QString readHours();
     QString readMinutes();
@@ -42,7 +46,8 @@ private:
     QString m_minutes;
     QString m_seconds;
     QTime m_fullTime;
-    bool m_update;
+    bool m_update_animation;
+    bool m_update_format;
 };
 
 #endif // PREPAREDATA_H

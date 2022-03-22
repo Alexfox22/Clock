@@ -5,6 +5,8 @@
 
 #include <trigger.h>
 #include <preparedata.h>
+#include <logger.h>
+
 
 int main(int argc, char *argv[])
 {
@@ -19,6 +21,7 @@ int main(int argc, char *argv[])
     QQmlContext* context = engine.rootContext();
         context->setContextProperty("PrepareData", &secondClass);
 
+       Logger::instance().log("---------------------------------------");
        Trigger* thread = new Trigger();
        PrepareData* pointer = &secondClass;
        Trigger::connect(thread, &Trigger::sendSignal, pointer, &PrepareData::receiveSignal);

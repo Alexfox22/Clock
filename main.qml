@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.15
+//import Logger 1.0
 
 Window{
     width: 460
@@ -11,9 +12,10 @@ Window{
 
     property bool running: true
 
+
     RowLayout{
         id: layout
-        width: 0.8*parent.width
+        width: 0.8 * parent.width
         height: parent.height
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
@@ -39,6 +41,7 @@ Window{
         }
 
         MyText{
+            id: seconds
             text: PrepareData.seconds
 
         }

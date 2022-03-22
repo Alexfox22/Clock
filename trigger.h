@@ -19,8 +19,8 @@ public slots:
 private:
     QTime m_timeData;
      bool m_label;
-
-    ~Trigger();
+public:
+       ~Trigger();
 };
 
 #endif // TRIGGER_H
