@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <logger.h>
+#include <Singletone.h>
 #include <preparedata.h>
 
 PrepareData::PrepareData(QObject *parent)
@@ -15,7 +16,7 @@ PrepareData::PrepareData(QObject *parent)
 
 QString PrepareData::readFormat()
 {
-    Logger::instance().log("Updated format");
+    Singletone<Logger>::instance()->log_console("Updated format");
     return m_format;
 }
 
@@ -74,7 +75,6 @@ void PrepareData::changeSeconds()
         emit updateFormat();
         m_update_format = false;
     }
-
 }
 
 QString PrepareData::readHours()
@@ -89,7 +89,7 @@ QString PrepareData::readMinutes()
 
 QString PrepareData::readSeconds()
 {
-    Logger::instance().log("Updated second");
+    Singletone<Logger>::instance()->log_console("Updated second");
     return m_seconds;
 }
 
@@ -100,7 +100,6 @@ bool PrepareData::readUpdate()
 
 void PrepareData::receiveSignal(QTime fullTime)
 {
-    Logger::instance().log("Get signal");
     m_fullTime = fullTime;
     changeHours();
     changeMinutes();

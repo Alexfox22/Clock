@@ -6,7 +6,6 @@ QT += quick
 
 
 SOURCES += \
-        logger.cpp \
         main.cpp \
         preparedata.cpp \
         trigger.cpp
@@ -25,6 +24,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    Singletone.h \
     logger.h \
     preparedata.h \
     trigger.h
