@@ -2,8 +2,6 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.15
-//import Logger 1.0
-//import SingletoneLogger 1.0
 
 Window{
     width: 460
@@ -75,7 +73,7 @@ Window{
             if (mouse.button == Qt.LeftButton) {
                 PrepareData.changeFormat()
                 Logger.log_console("Clicked")
-                //console.log("Clicked");
+                Logger.log_file("myLog.txt", "Clicked", false)
             }
         }
     }

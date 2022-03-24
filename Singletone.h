@@ -4,9 +4,7 @@
 template <typename T>
 class Singletone
 {
-
 public:
-
     static T* instance()
     {
         static T myinstance;

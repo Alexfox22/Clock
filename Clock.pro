@@ -6,6 +6,7 @@ QT += quick
 
 
 SOURCES += \
+        logger.cpp \
         main.cpp \
         preparedata.cpp \
         trigger.cpp

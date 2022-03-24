@@ -15,7 +15,4 @@ void Trigger::getSignal()
     m_label = false;
 }
 
-Trigger::~Trigger()
-{
-
-}
+Trigger::~Trigger(){}
