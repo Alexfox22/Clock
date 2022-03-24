@@ -1,5 +1,3 @@
-#include <QDebug>
-
 #include <trigger.h>
 
 void Trigger::run()
@@ -17,7 +15,4 @@ void Trigger::getSignal()
     m_label = false;
 }
 
-Trigger::~Trigger()
-{
-    qDebug() << "Deleted thread";
-}
+Trigger::~Trigger(){}

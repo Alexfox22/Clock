@@ -1,5 +1,6 @@
 #include <QDebug>
-
+#include <logger.h>
+#include <Singletone.h>
 #include <preparedata.h>
 
 PrepareData::PrepareData(QObject *parent)
@@ -9,11 +10,14 @@ PrepareData::PrepareData(QObject *parent)
     m_hours = "";
     m_minutes = "";
     m_seconds = "";
-    m_update = false;
+    m_update_animation = false;
+    m_update_format = false;
 }
 
 QString PrepareData::readFormat()
 {
+    Singletone<Logger>::instance()->log_console("Updated format");
+    Singletone<Logger>::instance()->log_file("myLog.txt", "Updated format", false);
     return m_format;
 }
 
@@ -34,10 +38,10 @@ void PrepareData::changeFormat()
             m_format = "pm";
         }
     }
-    emit updateFormat();
+    m_update_format = true;
 }
 
-QString PrepareData::readHours()
+void PrepareData::changeHours()
 {
     QString buffer = m_hours;
     m_hours = m_fullTime.toString("HH");
@@ -49,10 +53,9 @@ QString PrepareData::readHours()
     {
     emit updateHours();
     }
-    return m_hours;
 }
 
-QString PrepareData::readMinutes()
+void PrepareData::changeMinutes()
 {
     QString buffer = m_minutes;
     m_minutes = m_fullTime.toString("mm");
@@ -60,27 +63,47 @@ QString PrepareData::readMinutes()
     {
     emit updateMinutes();
     }
+}
+
+void PrepareData::changeSeconds()
+{
+    m_seconds = m_fullTime.toString("ss");
+    m_update_animation = true;
+    emit updateSeconds();
+    emit updateSmth();
+    if (m_update_format == true)
+    {
+        emit updateFormat();
+        m_update_format = false;
+    }
+}
+
+QString PrepareData::readHours()
+{    
+    return m_hours;
+}
+
+QString PrepareData::readMinutes()
+{    
     return m_minutes;
 }
 
 QString PrepareData::readSeconds()
 {
-    m_seconds = m_fullTime.toString("ss");
-    m_update = true;
-    emit updateSeconds();
-    emit updateSmth();
+    Singletone<Logger>::instance()->log_console("Updated second");
+    Singletone<Logger>::instance()->log_file("myLog.txt", "Updated second", false);
     return m_seconds;
 }
 
 bool PrepareData::readUpdate()
 {
-    return m_update;
+    return m_update_animation;
 }
 
 void PrepareData::receiveSignal(QTime fullTime)
 {
     m_fullTime = fullTime;
-    readHours();
-    readMinutes();
-    readSeconds();
+    changeHours();
+    changeMinutes();
+    changeSeconds();
 }

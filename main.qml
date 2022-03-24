@@ -13,7 +13,7 @@ Window{
 
     RowLayout{
         id: layout
-        width: 0.8*parent.width
+        width: 0.8 * parent.width
         height: parent.height
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
@@ -39,6 +39,7 @@ Window{
         }
 
         MyText{
+            id: seconds
             text: PrepareData.seconds
 
         }
@@ -71,6 +72,8 @@ Window{
         onClicked: {
             if (mouse.button == Qt.LeftButton) {
                 PrepareData.changeFormat()
+                Logger.log_console("Clicked")
+                Logger.log_file("myLog.txt", "Clicked", false)
             }
         }
     }

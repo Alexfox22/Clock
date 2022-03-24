@@ -5,6 +5,8 @@
 
 #include <trigger.h>
 #include <preparedata.h>
+#include <logger.h>
+#include <Singletone.h>
 
 int main(int argc, char *argv[])
 {
@@ -18,6 +20,9 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     QQmlContext* context = engine.rootContext();
         context->setContextProperty("PrepareData", &secondClass);
+        context->setContextProperty("Logger", Singletone<Logger>::instance());
+       Singletone<Logger>::instance()->log_console("Example");
+       Singletone<Logger>::instance()->log_file("myLog.txt", "Example", true);
 
        Trigger* thread = new Trigger();
        PrepareData* pointer = &secondClass;
@@ -36,3 +41,4 @@ int main(int argc, char *argv[])
 
     return app.exec();
 }
+
