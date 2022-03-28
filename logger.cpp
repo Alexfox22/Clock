@@ -1,33 +1,33 @@
 #include <logger.h>
 #include <fstream>
 #include <iostream>
+#include <filesystem>
+//#include <cstdint>
 
+namespace fs = std::filesystem;
 void Logger::log(const QString message)
 {
     std::lock_guard<std::mutex> lock(m_mutex);
     if (file_mode==false)
     {
-
             fprintf(stderr, "%s \n", message.toStdString().c_str());
             //qInfo(message.toStdString().c_str());
     }
     else
     {
-            std::ofstream myfile;
-            myfile.open(fileName.toStdString(), std::ofstream::app);
-            myfile << message.toStdString() << "\n";
-            myfile.close();
+            m_myfile << message.toStdString() << "\n";
     }
 }
 
 void Logger::setMode(QString _fileName)
 {
-    std::ifstream myfile(_fileName.toStdString());
-    if (myfile.is_open())
+    if (std::filesystem::exists(_fileName.toStdString()))
     {
         file_mode = true;
         fileName=_fileName;
-        std::ofstream myfile(_fileName.toStdString(),std::ofstream::trunc);
+        m_myfile.open(_fileName.toStdString(),std::ofstream::trunc);
+        m_myfile.close();
+        m_myfile.open(_fileName.toStdString(),std::ofstream::app);
     }
 }
 

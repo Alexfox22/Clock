@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
     QQmlContext* context = engine.rootContext();
        context->setContextProperty("PrepareData", &secondClass);
        context->setContextProperty("Logger", Singletone<Logger>::instance());
+       Singletone<Logger>::instance()->log("Started");
 
        Trigger* thread = new Trigger();
        PrepareData* pointer = &secondClass;

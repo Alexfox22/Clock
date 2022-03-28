@@ -23,7 +23,6 @@ private:
 public:
     Trigger();
        ~Trigger();
-
 };
 
 #endif // TRIGGER_H

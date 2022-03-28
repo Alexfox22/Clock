@@ -3,7 +3,8 @@
 
 #include <QObject>
 #include <QThread>
-
+#include <fstream>
+#include <iostream>
 
 class Logger: public QObject
 {
@@ -18,6 +19,7 @@ private:
     bool file_mode;
     QString fileName;
     std::mutex m_mutex;
+    std::ofstream m_myfile;
 };
 
 #endif // LOGGER_H
