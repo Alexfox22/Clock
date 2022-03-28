@@ -47,7 +47,6 @@ private:
     QString m_seconds;
     QTime m_fullTime;
     bool m_update_animation;
-    bool m_update_format;
 };
 
 #endif // PREPAREDATA_H

@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QThread>
 #include <logger.h>
 #include <Singletone.h>
 #include <preparedata.h>
@@ -11,13 +12,11 @@ PrepareData::PrepareData(QObject *parent)
     m_minutes = "";
     m_seconds = "";
     m_update_animation = false;
-    m_update_format = false;
 }
 
 QString PrepareData::readFormat()
 {
-    Singletone<Logger>::instance()->log_console("Updated format");
-    Singletone<Logger>::instance()->log_file("myLog.txt", "Updated format", false);
+    Singletone<Logger>::instance()->log("Updated format");
     return m_format;
 }
 
@@ -38,7 +37,8 @@ void PrepareData::changeFormat()
             m_format = "pm";
         }
     }
-    m_update_format = true;
+    changeHours();
+    emit updateFormat();
 }
 
 void PrepareData::changeHours()
@@ -71,11 +71,6 @@ void PrepareData::changeSeconds()
     m_update_animation = true;
     emit updateSeconds();
     emit updateSmth();
-    if (m_update_format == true)
-    {
-        emit updateFormat();
-        m_update_format = false;
-    }
 }
 
 QString PrepareData::readHours()
@@ -90,8 +85,7 @@ QString PrepareData::readMinutes()
 
 QString PrepareData::readSeconds()
 {
-    Singletone<Logger>::instance()->log_console("Updated second");
-    Singletone<Logger>::instance()->log_file("myLog.txt", "Updated second", false);
+    Singletone<Logger>::instance()->log("Updated second");
     return m_seconds;
 }
 
@@ -102,6 +96,7 @@ bool PrepareData::readUpdate()
 
 void PrepareData::receiveSignal(QTime fullTime)
 {
+    Singletone<Logger>::instance()->log("Received");
     m_fullTime = fullTime;
     changeHours();
     changeMinutes();

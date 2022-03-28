@@ -2,7 +2,7 @@
 #define LOGGER_H
 
 #include <QObject>
-//#include <QtGlobal>
+#include <QThread>
 
 
 class Logger: public QObject
@@ -10,13 +10,14 @@ class Logger: public QObject
      Q_OBJECT
 
 public:
-    explicit Logger (QObject *parent);
+    Logger();
+    Q_INVOKABLE void log(const QString message);
+    void setMode(QString _fileName);
 
-    Logger(){};
-
-    Q_INVOKABLE void log_console(const QString message);
-
-    Q_INVOKABLE void log_file(QString fileName, QString message, bool first_open);
+private:
+    bool file_mode;
+    QString fileName;
+    std::mutex m_mutex;
 };
 
 #endif // LOGGER_H

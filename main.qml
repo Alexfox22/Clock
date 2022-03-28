@@ -72,8 +72,7 @@ Window{
         onClicked: {
             if (mouse.button == Qt.LeftButton) {
                 PrepareData.changeFormat()
-                Logger.log_console("Clicked")
-                Logger.log_file("myLog.txt", "Clicked", false)
+                Logger.log("Clicked")
             }
         }
     }

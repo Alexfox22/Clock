@@ -15,14 +15,13 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     QGuiApplication app(argc, argv);
+    Singletone<Logger>::instance()->setMode(argv[1]);
 
     PrepareData secondClass;
     QQmlApplicationEngine engine;
     QQmlContext* context = engine.rootContext();
-        context->setContextProperty("PrepareData", &secondClass);
-        context->setContextProperty("Logger", Singletone<Logger>::instance());
-       Singletone<Logger>::instance()->log_console("Example");
-       Singletone<Logger>::instance()->log_file("myLog.txt", "Example", true);
+       context->setContextProperty("PrepareData", &secondClass);
+       context->setContextProperty("Logger", Singletone<Logger>::instance());
 
        Trigger* thread = new Trigger();
        PrepareData* pointer = &secondClass;
