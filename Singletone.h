@@ -1,7 +1,6 @@
 #ifndef SINGLETONE_H
 #define SINGLETONE_H
 
-#include <QDebug>
 #include <QThread>
 
 template <typename T>

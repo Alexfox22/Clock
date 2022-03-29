@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QThread>
+#include <QVariant>
 #include <fstream>
 #include <iostream>
 
@@ -12,12 +13,13 @@ class Logger: public QObject
 
 public:
     Logger();
+    Q_INVOKABLE void log(const QVariantList message);
     Q_INVOKABLE void log(const QString message);
-    void setMode(QString _fileName);
+    void setConsoleOutput();
+    void setFileOutput(QString _fileName);
 
 private:
-    bool file_mode;
-    QString fileName;
+    bool m_writeToFile;
     std::mutex m_mutex;
     std::ofstream m_myfile;
 };
