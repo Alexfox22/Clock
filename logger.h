@@ -13,7 +13,7 @@ class Logger: public QObject
 
 public:
     Logger();
-    Q_INVOKABLE void log(const QVariantList message);
+    Q_INVOKABLE void log(const QVariantList & message);
     Q_INVOKABLE void log(const QString message);
     void setConsoleOutput();
     void setFileOutput(QString _fileName);

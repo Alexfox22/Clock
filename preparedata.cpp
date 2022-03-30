@@ -85,7 +85,7 @@ QString PrepareData::readMinutes()
 
 QString PrepareData::readSeconds()
 {
-    Singletone<Logger>::instance()->log(QString("Updated second"));
+    Singletone<Logger>::instance()->log("Updated second");
     return m_seconds;
 }
 

@@ -9,22 +9,22 @@ namespace fs = std::filesystem;
 namespace fs = std::experimental::filesystem;
 #endif
 
-void Logger::log(const QVariantList message)
+void Logger::log(const QVariantList & message)
 {
     std::lock_guard<std::mutex> lock(m_mutex);
     if (m_writeToFile==false)
     {
-        for (QVariantList::const_iterator j = message.begin(); j != message.end(); j++)
+        for (QVariantList::const_iterator iterator = message.begin(); iterator != message.end(); iterator++)
         {
-            fprintf(stderr, "%s ", (*j).toString().toStdString().c_str());
+            fprintf(stderr, "%s ", iterator->toString().toStdString().c_str());
         }
         fprintf(stderr, "\n");
     }
     else
     {
-        for (QVariantList::const_iterator j = message.begin(); j != message.end(); j++)
+        for (QVariantList::const_iterator iterator = message.begin(); iterator != message.end(); iterator++)
         {
-            m_myfile << (*j).toString().toStdString();
+            m_myfile << iterator->toString().toStdString();
         }
         m_myfile << "\n";
     }
