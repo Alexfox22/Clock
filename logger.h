@@ -16,17 +16,17 @@ public:
     template<typename... Args>
     void log(Args ... message)
     {
-            std::lock_guard<std::mutex> lock(m_mutex);
-                if (m_writeToFile==false)
-                {
-                    ((fprintf(stderr, "%s ", ((QVariant)message).toString().toStdString().c_str())), ...);
-                    fprintf(stderr, "\n");
-                }
-                else
-                {
-                    ((m_myfile << ((QVariant)message).toString().toStdString()<< ' '), ...);
-                    m_myfile << "\n";
-                }
+        std::lock_guard<std::mutex> lock(m_mutex);
+        if (m_writeToFile==false)
+        {
+            (fprintf(stderr, "%s ", (static_cast<QVariant>(message).toString().toStdString().c_str())), ...);
+            fprintf(stderr, "\n");
+        }
+        else
+        {
+            ((m_myfile << static_cast<QVariant>(message).toString().toStdString() << ' '), ...);
+             m_myfile << "\n";
+        }
     }
     Q_INVOKABLE void log(const QString message);
     void setConsoleOutput();

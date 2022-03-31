@@ -25,7 +25,6 @@ void Logger::log(const QString message)
 void Logger::setFileOutput(QString _fileName)
 {
     std::lock_guard<std::mutex> lock(m_mutex);
-
     if (fs::exists(_fileName.toStdString()))
     {
         m_myfile.open(_fileName.toStdString(),std::ofstream::trunc);
