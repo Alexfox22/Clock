@@ -9,27 +9,6 @@ namespace fs = std::filesystem;
 namespace fs = std::experimental::filesystem;
 #endif
 
-void Logger::log(const QVariantList & message)
-{
-    std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_writeToFile==false)
-    {
-        for (QVariantList::const_iterator iterator = message.begin(); iterator != message.end(); iterator++)
-        {
-            fprintf(stderr, "%s ", iterator->toString().toStdString().c_str());
-        }
-        fprintf(stderr, "\n");
-    }
-    else
-    {
-        for (QVariantList::const_iterator iterator = message.begin(); iterator != message.end(); iterator++)
-        {
-            m_myfile << iterator->toString().toStdString();
-        }
-        m_myfile << "\n";
-    }
-}
-
 void Logger::log(const QString message)
 {
     std::lock_guard<std::mutex> lock(m_mutex);
@@ -45,18 +24,22 @@ void Logger::log(const QString message)
 
 void Logger::setFileOutput(QString _fileName)
 {
-    m_writeToFile = true;
+    std::lock_guard<std::mutex> lock(m_mutex);
+
     if (fs::exists(_fileName.toStdString()))
     {
         m_myfile.open(_fileName.toStdString(),std::ofstream::trunc);
         m_myfile.close();
     }
     m_myfile.open(_fileName.toStdString(),std::ofstream::app);
+    if (m_myfile.is_open() == true)
+        m_writeToFile = true;
 }
 
 void Logger::setConsoleOutput()
 {
-        m_writeToFile = false;
+    std::lock_guard<std::mutex> lock(m_mutex);
+    m_writeToFile = false;
 }
 
 Logger::Logger()
