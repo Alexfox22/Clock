@@ -31,8 +31,10 @@ void Logger::setFileOutput(QString _fileName)
         m_myfile.close();
     }
     m_myfile.open(_fileName.toStdString(),std::ofstream::app);
-    if (m_myfile.is_open() == true)
+    if (m_myfile.is_open() == true)   
+    {
         m_writeToFile = true;
+    }
 }
 
 void Logger::setConsoleOutput()
@@ -43,5 +45,5 @@ void Logger::setConsoleOutput()
 
 Logger::Logger()
 {
-    setConsoleOutput();
+   setConsoleOutput();
 }

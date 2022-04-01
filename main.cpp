@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 
        QVariant time = QTime::currentTime();
        Singletone<Logger>::instance()->log("Start time =", time);
-       Singletone<Logger>::instance()->setConsoleOutput();
+       //Singletone<Logger>::instance()->setConsoleOutput();
 
        Trigger* thread = new Trigger();
        PrepareData* pointer = &secondClass;
