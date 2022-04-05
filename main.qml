@@ -72,7 +72,7 @@ Window{
         onClicked: {
             if (mouse.button == Qt.LeftButton) {
                 PrepareData.changeFormat()
-                Logger.log("Clicked")
+                Logger.log(["Clicked ", seconds.text])
             }
         }
     }

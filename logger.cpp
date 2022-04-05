@@ -2,25 +2,13 @@
 #include <iostream>
 #include <filesystem>
 #include <QString>
+#include <QDebug>
 
 #ifdef __cpp_lib_filesystem
 namespace fs = std::filesystem;
 #else
 namespace fs = std::experimental::filesystem;
 #endif
-
-void Logger::log(const QString message)
-{
-    std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_writeToFile==false)
-    {
-            fprintf(stderr, "%s \n", message.toStdString().c_str());
-    }
-    else
-    {
-            m_myfile << message.toStdString() << "\n";
-    }
-}
 
 void Logger::setFileOutput(QString _fileName)
 {
@@ -43,7 +31,49 @@ void Logger::setConsoleOutput()
     m_writeToFile = false;
 }
 
+void Logger::log(const QVariantList& message)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if (m_writeToFile==false)
+    {
+        for (QVariantList::const_iterator j = message.begin(); j != message.end(); j++)
+        {
+            fprintf(stderr, "%s ", to_stdString(*j).c_str());
+        }
+        fprintf(stderr, "\n");
+    }
+    else
+    {
+        for (QVariantList::const_iterator j = message.begin(); j != message.end(); j++)
+        {
+            m_myfile << to_stdString(*j);
+        }
+        m_myfile << "\n";
+    }
+}
+
 Logger::Logger()
 {
    setConsoleOutput();
 }
+
+std::string Logger::to_stdString(QVariant arg)
+{
+    return arg.toString().toStdString();
+}
+
+std::string Logger::to_stdString(int arg)
+{
+    return std::to_string(arg);
+}
+
+std::string Logger::to_stdString(std::string arg)
+{
+    return arg;
+}
+
+std::string Logger::to_stdString(const char *arg)
+{
+    return arg;
+}
+

@@ -1,7 +1,11 @@
 #include <QQmlApplicationEngine>
 #include <QGuiApplication>
 #include <QQmlContext>
+#include <QQuickView>
+#include <QMetaObject>
 #include <QThread>
+#include <QDebug>
+#include <QObject>
 
 #include <trigger.h>
 #include <preparedata.h>
@@ -15,17 +19,18 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     QGuiApplication app(argc, argv);
-    Singletone<Logger>::instance()->setFileOutput(argv[1]);
-
+    if (argc > 1)
+    {
+        Singletone<Logger>::instance()->setFileOutput(argv[1]);
+    }
     PrepareData secondClass;
     QQmlApplicationEngine engine;
     QQmlContext* context = engine.rootContext();
        context->setContextProperty("PrepareData", &secondClass);
        context->setContextProperty("Logger", Singletone<Logger>::instance());
-       Singletone<Logger>::instance()->log("Started");
 
-       QVariant time = QTime::currentTime();
-       Singletone<Logger>::instance()->log("Start time =", time);
+       QTime time = QTime::currentTime();
+       Singletone<Logger>::instance()->log("meow", time);
        //Singletone<Logger>::instance()->setConsoleOutput();
 
        Trigger* thread = new Trigger();
