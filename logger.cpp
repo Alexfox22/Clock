@@ -11,49 +11,53 @@ namespace fs = std::filesystem;
 namespace fs = std::experimental::filesystem;
 #endif
 
-std::ostream& operator<<(std::ostream& os, const QVariant& dt)
+std::ostream& operator<<(std::ostream& stream, const QVariant& data)
 {
-    os << dt.toString().toStdString();
-    return os;
+    stream << data.toString().toStdString();
+    return stream;
 }
 
-void Logger::setFileOutput(QString _fileName)
+void Logger::setMode(m_modeType modeType, QString fileName)
 {
     std::lock_guard<std::mutex> lock(m_mutex);
-    if (fs::exists(_fileName.toStdString()))
+    if (modeType == CONSOLE)
     {
-        m_myfile.open(_fileName.toStdString(),std::ofstream::trunc);
-        m_myfile.close();
+        m_writeToFile = false;
     }
-    m_myfile.open(_fileName.toStdString(),std::ofstream::app);
-    if (m_myfile.is_open() == true)   
+    else
     {
-        m_writeToFile = true;
+        if (fileName != "")
+        {
+            if (fs::exists(fileName.toStdString()) == true)
+            {
+                m_myfile.open(fileName.toStdString(), std::ofstream::trunc);
+                m_myfile.close();
+            }
+            m_myfile.open(fileName.toStdString(), std::ofstream::app);
+            if (m_myfile.is_open() == true)
+            {
+                m_writeToFile = true;
+            }
+        }
     }
-}
-
-void Logger::setConsoleOutput()
-{
-    std::lock_guard<std::mutex> lock(m_mutex);
-    m_writeToFile = false;
 }
 
 void Logger::log(const QVariantList& message)
 {
     std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_writeToFile==false)
+    if (m_writeToFile == false)
     {
-        for (QVariantList::const_iterator j = message.begin(); j != message.end(); j++)
+        for (QVariantList::const_iterator iterator = message.begin(); iterator != message.end(); iterator++)
         {
-            std::cerr << (*j);
+            std::cerr << (*iterator);
         }
         std::cerr << "\n";
     }
     else
     {
-        for (QVariantList::const_iterator j = message.begin(); j != message.end(); j++)
+        for (QVariantList::const_iterator iterator = message.begin(); iterator != message.end(); iterator++)
         {
-            m_myfile << (*j);
+            m_myfile << (*iterator);
         }
         m_myfile << "\n";
     }
@@ -61,5 +65,5 @@ void Logger::log(const QVariantList& message)
 
 Logger::Logger()
 {
-   setConsoleOutput();
+   m_writeToFile = false;
 }

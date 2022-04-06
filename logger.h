@@ -13,12 +13,15 @@ class Logger: public QObject
 
 public:
     Logger();
-
+    enum m_modeType
+    {
+        CONSOLE, FILE
+    };
     template<typename... Args>
     void log(Args ... message)
     {
         std::lock_guard<std::mutex> lock(m_mutex);
-        if (m_writeToFile==false)
+        if (m_writeToFile == false)
         {
             ((std::cerr << message), ...);
             std::cerr << "\n";
@@ -30,9 +33,8 @@ public:
         }
     }
     Q_INVOKABLE void log(const QVariantList& message);
-    void setConsoleOutput();
-    void setFileOutput(QString _fileName);
-    friend std::ostream& operator<<(std::ostream& os, const QVariant& dt);
+    void setMode(m_modeType modeType, QString fileName = "");
+    friend std::ostream& operator<<(std::ostream& stream, const QVariant& data);
 
 private:
     bool m_writeToFile;

@@ -9,14 +9,13 @@
 
 int main(int argc, char *argv[])
 {
-
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     QGuiApplication app(argc, argv);
     if (argc > 1)
     {
-        Singletone<Logger>::instance()->setFileOutput(argv[1]);
+        Singletone<Logger>::instance()->setMode(Logger::FILE, argv[1]);
     }
     PrepareData secondClass;
     QQmlApplicationEngine engine;
@@ -25,8 +24,8 @@ int main(int argc, char *argv[])
        context->setContextProperty("Logger", Singletone<Logger>::instance());
 
        QTime time = QTime::currentTime();
-       Singletone<Logger>::instance()->log("Time start ", 12345 ,time);
-       //Singletone<Logger>::instance()->setConsoleOutput();
+       Singletone<Logger>::instance()->log("Time start ", time);
+       //Singletone<Logger>::instance()->setMode(Logger::CONSOLE);
 
        Trigger* thread = new Trigger();
        PrepareData* pointer = &secondClass;
