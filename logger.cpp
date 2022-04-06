@@ -1,14 +1,21 @@
 #include <logger.h>
 #include <iostream>
+#include <fstream>
 #include <filesystem>
 #include <QString>
-#include <QDebug>
+#include <typeinfo>
 
 #ifdef __cpp_lib_filesystem
 namespace fs = std::filesystem;
 #else
 namespace fs = std::experimental::filesystem;
 #endif
+
+std::ostream& operator<<(std::ostream& os, const QVariant& dt)
+{
+    os << dt.toString().toStdString();
+    return os;
+}
 
 void Logger::setFileOutput(QString _fileName)
 {
@@ -38,15 +45,15 @@ void Logger::log(const QVariantList& message)
     {
         for (QVariantList::const_iterator j = message.begin(); j != message.end(); j++)
         {
-            fprintf(stderr, "%s ", to_stdString(*j).c_str());
+            std::cerr << (*j);
         }
-        fprintf(stderr, "\n");
+        std::cerr << "\n";
     }
     else
     {
         for (QVariantList::const_iterator j = message.begin(); j != message.end(); j++)
         {
-            m_myfile << to_stdString(*j);
+            m_myfile << (*j);
         }
         m_myfile << "\n";
     }
@@ -56,24 +63,3 @@ Logger::Logger()
 {
    setConsoleOutput();
 }
-
-std::string Logger::to_stdString(QVariant arg)
-{
-    return arg.toString().toStdString();
-}
-
-std::string Logger::to_stdString(int arg)
-{
-    return std::to_string(arg);
-}
-
-std::string Logger::to_stdString(std::string arg)
-{
-    return arg;
-}
-
-std::string Logger::to_stdString(const char *arg)
-{
-    return arg;
-}
-

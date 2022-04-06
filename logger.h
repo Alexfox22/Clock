@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QThread>
 #include <QVariant>
-//#include <QString>
 #include <fstream>
 #include <iostream>
 
@@ -14,10 +13,6 @@ class Logger: public QObject
 
 public:
     Logger();
-    std::string to_stdString(QVariant arg);
-    std::string to_stdString(int arg);
-    std::string to_stdString(std::string arg);
-    std::string to_stdString(const char* arg);
 
     template<typename... Args>
     void log(Args ... message)
@@ -25,24 +20,24 @@ public:
         std::lock_guard<std::mutex> lock(m_mutex);
         if (m_writeToFile==false)
         {
-            ((fprintf(stderr, "%s ", (to_stdString(message).c_str()))), ...);
-            fprintf(stderr, "\n");
+            ((std::cerr << message), ...);
+            std::cerr << "\n";
         }
         else
         {
-             ((m_myfile << to_stdString(message)), ...);
+             ((m_myfile << message), ...);
              m_myfile << "\n";
         }
     }
     Q_INVOKABLE void log(const QVariantList& message);
     void setConsoleOutput();
-    void setFileOutput(QString _fileName);   
+    void setFileOutput(QString _fileName);
+    friend std::ostream& operator<<(std::ostream& os, const QVariant& dt);
 
 private:
     bool m_writeToFile;
     std::mutex m_mutex;
     std::ofstream m_myfile;
-
 };
 
 #endif // LOGGER_H

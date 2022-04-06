@@ -1,12 +1,7 @@
 #include <QQmlApplicationEngine>
 #include <QGuiApplication>
 #include <QQmlContext>
-#include <QQuickView>
-#include <QMetaObject>
 #include <QThread>
-#include <QDebug>
-#include <QObject>
-
 #include <trigger.h>
 #include <preparedata.h>
 #include <logger.h>
@@ -30,7 +25,7 @@ int main(int argc, char *argv[])
        context->setContextProperty("Logger", Singletone<Logger>::instance());
 
        QTime time = QTime::currentTime();
-       Singletone<Logger>::instance()->log("meow", time);
+       Singletone<Logger>::instance()->log("Time start ", 12345 ,time);
        //Singletone<Logger>::instance()->setConsoleOutput();
 
        Trigger* thread = new Trigger();

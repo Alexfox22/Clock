@@ -16,7 +16,6 @@ PrepareData::PrepareData(QObject *parent)
 
 QString PrepareData::readFormat()
 {
-    Singletone<Logger>::instance()->log("Updated format");
     return m_format;
 }
 
@@ -85,7 +84,7 @@ QString PrepareData::readMinutes()
 
 QString PrepareData::readSeconds()
 {
-    Singletone<Logger>::instance()->log("Updated second", m_seconds);
+    Singletone<Logger>::instance()->log("Updated second ", m_seconds);
     return m_seconds;
 }
 
