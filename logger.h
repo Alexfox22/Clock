@@ -15,7 +15,8 @@ public:
     Logger();
     enum m_modeType
     {
-        CONSOLE, FILE
+        CONSOLE,
+        FILE
     };
     template<typename... Args>
     void log(Args ... message)

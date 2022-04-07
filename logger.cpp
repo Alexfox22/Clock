@@ -1,6 +1,5 @@
 #include <logger.h>
 #include <iostream>
-#include <fstream>
 #include <filesystem>
 #include <QString>
 #include <typeinfo>
@@ -20,7 +19,7 @@ std::ostream& operator<<(std::ostream& stream, const QVariant& data)
 void Logger::setMode(m_modeType modeType, QString fileName)
 {
     std::lock_guard<std::mutex> lock(m_mutex);
-    if (modeType == CONSOLE)
+    if (modeType == m_modeType::CONSOLE)
     {
         m_writeToFile = false;
     }
