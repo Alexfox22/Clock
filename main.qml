@@ -55,7 +55,7 @@ Window{
         to: 0.0
         duration: 600
         target: firstColon
-        running: PrepareData.update
+        running: PrepareData.updateAnimation
     }
 
     OpacityAnimator{
@@ -63,7 +63,7 @@ Window{
         to: 0.0
         duration: 600
         target: secondColon
-        running: PrepareData.update
+        running: PrepareData.updateAnimation
     }
 
     MouseArea{

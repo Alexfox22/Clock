@@ -1,22 +1,23 @@
 #include <QQmlApplicationEngine>
-#include <QGuiApplication>
 #include <QQmlContext>
+#include <QtTest/QTest>
 #include <QThread>
 #include <trigger.h>
 #include <preparedata.h>
 #include <logger.h>
 #include <Singletone.h>
+#include <test.h>
 
 int main(int argc, char *argv[])
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
-    QGuiApplication app(argc, argv);
     if (argc > 1)
     {
         Singletone<Logger>::instance()->setMode(Logger::FILE, argv[1]);
     }
+    QGuiApplication app(argc, argv);
     PrepareData secondClass;
     QQmlApplicationEngine engine;
     QQmlContext* context = engine.rootContext();

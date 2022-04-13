@@ -11,7 +11,7 @@ PrepareData::PrepareData(QObject *parent)
     m_hours = "";
     m_minutes = "";
     m_seconds = "";
-    m_update_animation = false;
+    m_updateAnimation = false;
 }
 
 QString PrepareData::readFormat()
@@ -67,9 +67,9 @@ void PrepareData::changeMinutes()
 void PrepareData::changeSeconds()
 {
     m_seconds = m_fullTime.toString("ss");
-    m_update_animation = true;
+    m_updateAnimation = true;
     emit updateSeconds();
-    emit updateSmth();
+    emit updateAnimation();
 }
 
 QString PrepareData::readHours()
@@ -84,18 +84,23 @@ QString PrepareData::readMinutes()
 
 QString PrepareData::readSeconds()
 {
-    Singletone<Logger>::instance()->log("Updated second ", m_seconds);
+    //Singletone<Logger>::instance()->log("Updated second ", m_seconds);
     return m_seconds;
 }
 
 bool PrepareData::readUpdate()
 {
-    return m_update_animation;
+    return m_updateAnimation;
+}
+
+QTime PrepareData::readFullTime()
+{
+    return m_fullTime;
 }
 
 void PrepareData::receiveSignal(QTime fullTime)
 {
-    Singletone<Logger>::instance()->log("Received");
+    //Singletone<Logger>::instance()->log("Received");
     m_fullTime = fullTime;
     changeHours();
     changeMinutes();

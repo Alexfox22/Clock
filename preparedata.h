@@ -11,7 +11,7 @@ class PrepareData : public QObject
     Q_PROPERTY(QString hours READ readHours NOTIFY updateHours)
     Q_PROPERTY(QString minutes READ readMinutes NOTIFY updateMinutes)
     Q_PROPERTY(QString seconds READ readSeconds NOTIFY updateSeconds)
-    Q_PROPERTY(bool update READ readUpdate NOTIFY updateSmth)
+    Q_PROPERTY(bool updateAnimation READ readUpdate NOTIFY updateAnimation)
 
 public:
     explicit PrepareData(QObject *parent = nullptr);
@@ -27,13 +27,14 @@ public:
     QString readMinutes();
     QString readSeconds();
     bool readUpdate();
+    QTime readFullTime();
 
 signals:
     void updateFormat();
     void updateHours();
     void updateMinutes();
     void updateSeconds();
-    void updateSmth();
+    void updateAnimation();
 
     void exit_proc();   //we can emit this signal to finish work in trigger
 
@@ -46,7 +47,7 @@ private:
     QString m_minutes;
     QString m_seconds;
     QTime m_fullTime;
-    bool m_update_animation;
+    bool m_updateAnimation;
 };
 
 #endif // PREPAREDATA_H
