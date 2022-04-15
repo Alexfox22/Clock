@@ -19,17 +19,25 @@ private slots:
     void readUpdate_test();
 
     void receiveSignal_test();
-    void receiveSignal_wrongData_test();
 
-    void changeFormat_change_test();
-    void changeFormat_emit_test();
+    void changeFormat_test();
 
-    void changeHours_change_test();
-    void changeHours_emit_test();
-    void changeMinutes_change_test();
-    void changeMinutes_emit_test();
-    void changeSeconds_change_test();
-    void changeSeconds_emit_test();
+    void changeHours_test();
+    void changeMinutes_test();
+    void changeSeconds_test();
+    void changeHoursMinutes_onlyWhenNecessary();
+
+    void all_hours_combinations_24h_data();
+    void all_hours_combinations_12h_am_data();
+    void all_hours_combinations_12h_pm_data();
+    void all_minutes_combinations_data();
+    void all_seconds_combinations_data();
+
+    void all_hours_combinations_24h();
+    void all_hours_combinations_12h_am();
+    void all_hours_combinations_12h_pm();
+    void all_minutes_combinations();
+    void all_seconds_combinations();
 
 };
 #endif // TEST_H

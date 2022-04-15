@@ -46,7 +46,14 @@ void PrepareData::changeHours()
     m_hours = m_fullTime.toString("HH");
     if ((m_format == "am") || (m_format == "pm"))
     {
-        m_hours = QVariant(m_hours.toInt() % 12).toString();
+        if ((m_hours.toInt() % 12) < 10)
+        {
+            m_hours = "0"+ QString::number(m_hours.toInt() % 12);
+        }
+        else
+        {
+            m_hours = QString::number(m_hours.toInt() % 12);
+        }
     }
     if (buffer != m_hours)
     {
