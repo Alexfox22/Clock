@@ -17,25 +17,23 @@ private slots:
     void readMinutes_test();
     void readSeconds_test();
     void readUpdate_test();
+    void setAmPm_test();
 
     void receiveSignal_test();
 
     void changeFormat_test();
-
     void changeHours_test();
     void changeMinutes_test();
     void changeSeconds_test();
     void changeHoursMinutes_onlyWhenNecessary();
 
     void all_hours_combinations_24h_data();
-    void all_hours_combinations_12h_am_data();
-    void all_hours_combinations_12h_pm_data();
+    void all_hoursAndFormat_combinations_12h_data();
     void all_minutes_combinations_data();
     void all_seconds_combinations_data();
 
     void all_hours_combinations_24h();
-    void all_hours_combinations_12h_am();
-    void all_hours_combinations_12h_pm();
+    void all_hoursAndFormat_combinations_12h();
     void all_minutes_combinations();
     void all_seconds_combinations();
 

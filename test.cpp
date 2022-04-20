@@ -2,8 +2,6 @@
 #include <preparedata.h>
 #include <QtTest/QTest>
 #include <QSignalSpy>
-#include <charconv>
-#include <iostream>
 
 test::test(QObject *parent)
     : QObject{parent}
@@ -39,6 +37,13 @@ void test::readUpdate_test()
     QCOMPARE(a.readUpdate(), false);
 }
 
+void test::setAmPm_test()
+{
+    PrepareData a;
+    QVERIFY(a.setAmPm(QTime::fromString("1", "h")) == "am");
+    QVERIFY(a.setAmPm(QTime::fromString("14", "h")) == "pm");
+}
+
 void test::changeFormat_test()
 {
     PrepareData a;
@@ -49,6 +54,8 @@ void test::changeFormat_test()
     QCOMPARE(spyHours.count(), 1);
     QCOMPARE(spyFormat.count(), 1);
     QVERIFY(a.readFormat() == "am");
+    a.receiveSignal(QTime::fromString("14", "h"));
+    QVERIFY(a.readFormat() == "pm");
 
     a.changeFormat();
     QVERIFY(a.readFormat() == "");
@@ -105,49 +112,46 @@ void test::changeHoursMinutes_onlyWhenNecessary()
     QCOMPARE(spyMinutes.count(), 1);
 }
 
+void test::receiveSignal_test()
+{
+    PrepareData a;
+    QTime time = QTime::fromString("1.1.1", "h.m.s");
+    a.receiveSignal(time);
+    QCOMPARE(a.readFullTime().toString("HH:mm:ss"), time.toString("HH:mm:ss"));
+}
+
 void test::all_hours_combinations_24h_data()
 {
     QTest::addColumn<QTime>("input");
     QTest::addColumn<QString>("result");
         for (int hour = 0; hour < 24; hour++)
         {
-            QString buffer = "";
-            if (hour < 10)
-                buffer = '0'+ QString::number(hour);
-            else
-                buffer = QString::number(hour);
-            QTest::newRow(("hours: " + buffer).toStdString().c_str()) << QTime::fromString(buffer, "h") << buffer;
+            char buffer[3];
+            std::sprintf(buffer, "%02d", hour);
+            QTest::newRow(buffer)<< QTime::fromString(buffer, "h") << buffer;
         }
 }
 
-void test::all_hours_combinations_12h_am_data()
+void test::all_hoursAndFormat_combinations_12h_data()
 {
     QTest::addColumn<QTime>("input");
     QTest::addColumn<QString>("result");
-        for (int hour = 0; hour < 12; hour++)
+    QTest::addColumn<QString>("format");
+    for (int hour = 0; hour < 24; hour++)
+    {
+        char input[3];
+        char expect[3];
+        std::sprintf(input, "%02d", hour);
+        std::sprintf(expect, "%02d", (hour % 12 == 0)?12:(hour % 12));      //if 24h 00:00, am\pm 12:00
+        if (hour < 12)
         {
-            QString buffer = "";
-            if (hour < 10)
-                buffer = '0'+ QString::number(hour);
-            else
-                buffer = QString::number(hour);
-            QTest::newRow(("hours: " + buffer).toStdString().c_str()) << QTime::fromString(buffer, "h") << buffer;
+           QTest::newRow(input)<< QTime::fromString(input, "h") << expect << "am";
         }
-}
-
-void test::all_hours_combinations_12h_pm_data()
-{
-    QTest::addColumn<QTime>("input");
-    QTest::addColumn<QString>("result");
-        for (int hour = 0; hour < 12; hour++)
+        else
         {
-            QString buffer = "";
-            if (hour < 10)
-                buffer = '0'+ QString::number(hour);
-            else
-                buffer = QString::number(hour);
-            QTest::newRow(("hours: " + buffer).toStdString().c_str()) << QTime::fromString(buffer, "h") << buffer;
+            QTest::newRow(input)<< QTime::fromString(input, "h") << expect << "pm";
         }
+    }
 }
 
 void test::all_minutes_combinations_data()
@@ -156,12 +160,9 @@ void test::all_minutes_combinations_data()
     QTest::addColumn<QString>("result");
     for (int minute = 0; minute < 60; minute++)
     {
-        QString buffer;
-        if (minute < 10)
-            buffer = '0'+ QString::number(minute);
-        else
-            buffer = QString::number(minute);
-        QTest::newRow(("minutes: " + buffer).toStdString().c_str()) << QTime::fromString(buffer, "m") << buffer;
+        char buffer[3];
+        std::sprintf(buffer, "%02d", minute);
+        QTest::newRow(buffer)<< QTime::fromString(buffer, "m") << buffer;
     }
 }
 
@@ -171,21 +172,10 @@ void test::all_seconds_combinations_data()
     QTest::addColumn<QString>("result");
     for (int second = 0; second < 60; second++)
     {
-        QString buffer;
-        if (second < 10)
-            buffer = '0'+ QString::number(second);
-        else
-            buffer = QString::number(second);
-        QTest::newRow(("seconds: " + buffer).toStdString().c_str()) << QTime::fromString(buffer, "s") << buffer;
+        char buffer[3];
+        std::sprintf(buffer, "%02d", second);
+        QTest::newRow(buffer)<< QTime::fromString(buffer, "s") << buffer;
     }
-}
-
-void test::receiveSignal_test()
-{
-    PrepareData a;
-    QTime time = QTime::fromString("1.1.1", "h.m.s");
-    a.receiveSignal(time);
-    QCOMPARE(a.readFullTime().toString("HH:mm:ss"), time.toString("HH:mm:ss"));
 }
 
 void test::all_hours_combinations_24h()
@@ -197,25 +187,16 @@ void test::all_hours_combinations_24h()
     QCOMPARE(a.readHours(), result);
 }
 
-void test::all_hours_combinations_12h_am()
+void test::all_hoursAndFormat_combinations_12h()
 {
     PrepareData a;
     a.changeFormat();
     QFETCH(QTime, input);
     QFETCH(QString, result);
+    QFETCH(QString, format);
     a.receiveSignal(input);
     QCOMPARE(a.readHours(), result);
-}
-
-void test::all_hours_combinations_12h_pm()
-{
-    PrepareData a;
-    a.receiveSignal(QTime::fromString("13", "h"));
-    a.changeFormat();
-    QFETCH(QTime, input);
-    QFETCH(QString, result);
-    a.receiveSignal(input);
-    QCOMPARE(a.readHours(), result);
+    QCOMPARE(a.readFormat(), format);
 }
 
 void test::all_minutes_combinations()

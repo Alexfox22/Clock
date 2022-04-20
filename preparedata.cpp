@@ -19,6 +19,18 @@ QString PrepareData::readFormat()
     return m_format;
 }
 
+QString PrepareData::setAmPm(QTime m_time)
+{
+    if (m_time.hour() < 12)
+    {
+        return "am";
+    }
+    else
+    {
+        return "pm";
+    }
+}
+
 void PrepareData::changeFormat()
 {
     if ((m_format == "am") || (m_format == "pm"))
@@ -27,14 +39,7 @@ void PrepareData::changeFormat()
     }
     else
     {
-        if (m_hours.toInt() < 13)
-        {
-            m_format = "am";
-        }
-        else
-        {
-            m_format = "pm";
-        }
+       m_format = setAmPm(m_fullTime);
     }
     changeHours();
     emit updateFormat();
@@ -43,21 +48,23 @@ void PrepareData::changeFormat()
 void PrepareData::changeHours()
 {
     QString buffer = m_hours;
-    m_hours = m_fullTime.toString("HH");
-    if ((m_format == "am") || (m_format == "pm"))
+
+    if (m_format == "")
     {
-        if ((m_hours.toInt() % 12) < 10)
-        {
-            m_hours = "0"+ QString::number(m_hours.toInt() % 12);
-        }
-        else
-        {
-            m_hours = QString::number(m_hours.toInt() % 12);
-        }
+        m_hours = m_fullTime.toString("HH");
+    }
+    else
+    {
+        m_hours = m_fullTime.toString("hhap");
     }
     if (buffer != m_hours)
     {
-    emit updateHours();
+        if (m_format != "")
+        {
+            m_format = setAmPm(m_fullTime);
+            emit updateFormat();
+        }
+        emit updateHours();
     }
 }
 

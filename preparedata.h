@@ -27,7 +27,8 @@ public:
     QString readMinutes();
     QString readSeconds();
     bool readUpdate();
-    QTime readFullTime();
+    QTime readFullTime();    
+    QString setAmPm(QTime m_time);
 
 signals:
     void updateFormat();
